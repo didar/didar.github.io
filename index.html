@@ -8,9 +8,8 @@
   <style>
     :root {
       --bg: #0f0f0f;
-      --fg: #eaeaea;
-      --muted: #9a9a9a;
-      --card: #141414;
+      --fg: #ededed;
+      --muted: #9c9c9c;
     }
 
     * {
@@ -20,32 +19,45 @@
     body {
       margin: 0;
       min-height: 100vh;
-      background: radial-gradient(circle at top, #151515, var(--bg));
+      background: radial-gradient(circle at top, #161616, var(--bg));
       color: var(--fg);
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
+      overflow-x: hidden;
+    }
+
+    /* Scroll-reactive grain */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: -200%;
+      background-image:
+        repeating-radial-gradient(circle at 0 0,
+          rgba(255,255,255,0.015),
+          rgba(255,255,255,0.015) 1px,
+          transparent 1px,
+          transparent 2px);
+      pointer-events: none;
+      mix-blend-mode: overlay;
+      opacity: 0.35;
+      transform: translate(var(--grain-x, 0), var(--grain-y, 0));
+      transition: transform 0.15s linear;
     }
 
     .card {
       text-align: center;
-      padding: 2.75rem 2.2rem;
-      max-width: 420px;
+      padding: 3rem 2.4rem;
+      max-width: 440px;
       width: 100%;
-      background: rgba(20, 20, 20, 0.4);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
       animation: enter 0.9s ease-out both;
     }
 
     @keyframes enter {
       from {
         opacity: 0;
-        transform: translateY(16px);
+        transform: translateY(18px);
       }
       to {
         opacity: 1;
@@ -54,13 +66,12 @@
     }
 
     .avatar {
-      width: 120px;
-      height: 120px;
+      width: 124px;
+      height: 124px;
       border-radius: 50%;
       object-fit: cover;
-      margin-bottom: 1.3rem;
-      border: 3px solid #333;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      margin-bottom: 1.4rem;
+      border: 2px solid #222;
       animation: breathe 6s ease-in-out infinite;
     }
 
@@ -71,24 +82,24 @@
 
     h1 {
       margin: 0;
-      font-size: 1.6rem;
+      font-size: 1.85rem;
       font-weight: 600;
-      letter-spacing: 0.01em;
+      letter-spacing: 0.015em;
     }
 
     .role {
-      margin-top: 0.45rem;
+      margin-top: 0.55rem;
       color: var(--muted);
-      font-size: 0.95rem;
-      letter-spacing: 0.05em;
+      font-size: 1.05rem;
+      letter-spacing: 0.06em;
       text-transform: lowercase;
     }
 
     .links {
-      margin-top: 2.2rem;
+      margin-top: 2.4rem;
       display: flex;
       justify-content: center;
-      gap: 1.3rem;
+      gap: 1.4rem;
     }
 
     .links a {
@@ -98,9 +109,9 @@
     }
 
     .icon {
-      width: 32px;
-      height: 32px;
-      fill: #b5b5b5;
+      width: 30px;
+      height: 30px;
+      fill: #b8b8b8;
       transition:
         fill 0.25s ease,
         transform 0.25s ease,
@@ -108,47 +119,28 @@
     }
 
     .links a:hover .icon {
-      transform: translateY(-3px) scale(1.05);
-      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4));
+      transform: translateY(-3px) scale(1.06);
+      filter: drop-shadow(0 6px 14px rgba(0,0,0,0.45));
     }
 
     .links a:active .icon {
       transform: translateY(-1px) scale(0.97);
     }
 
-    /* Brand hover colors */
+    /* Brand colors */
     .github:hover .icon { fill: #ffffff; }
     .x:hover .icon { fill: #1da1f2; }
     .facebook:hover .icon { fill: #1877f2; }
     .linkedin:hover .icon { fill: #0a66c2; }
-
-    /* Instagram specific styles */
-    .instagram-icon {
-      stroke: #b5b5b5;
-      fill: none;
-      transition:
-        stroke 0.25s ease,
-        transform 0.25s ease,
-        filter 0.25s ease;
-    }
-
-    .instagram:hover .instagram-icon {
-      stroke: #e4405f;
-      transform: translateY(-3px) scale(1.05);
-      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4));
-    }
-
-    .instagram:active .instagram-icon {
-      transform: translateY(-1px) scale(0.97);
-    }
+    .instagram:hover .icon { fill: url(#ig-gradient); }
 
     footer {
-      margin-top: 2.3rem;
-      font-size: 0.75rem;
+      margin-top: 2.6rem;
+      font-size: 0.8rem;
       color: #666;
       opacity: 0;
       animation: fadeIn 1s ease forwards;
-      animation-delay: 0.6s;
+      animation-delay: 0.7s;
     }
 
     @keyframes fadeIn {
@@ -186,12 +178,17 @@
         </svg>
       </a>
 
-      <!-- Instagram -->
+      <!-- Instagram (fixed) -->
       <a class="instagram" href="https://instagram.com/didar.xyz" target="_blank" aria-label="Instagram">
-        <svg class="instagram-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+        <svg class="icon" viewBox="0 0 24 24">
+          <defs>
+            <linearGradient id="ig-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#f58529"/>
+              <stop offset="50%" stop-color="#dd2a7b"/>
+              <stop offset="100%" stop-color="#515bd4"/>
+            </linearGradient>
+          </defs>
+          <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3zm-5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5zm4.75-2.25a1.25 1.25 0 1 1-1.25-1.25 1.25 1.25 0 0 1 1.25 1.25z"/>
         </svg>
       </a>
 
@@ -203,7 +200,14 @@
       </a>
     </div>
 
-  </div>
+
+  <script>
+    window.addEventListener("scroll", () => {
+      const y = window.scrollY;
+      document.body.style.setProperty("--grain-x", `${y * 0.03}px`);
+      document.body.style.setProperty("--grain-y", `${y * 0.05}px`);
+    });
+  </script>
 
 </body>
 </html>
